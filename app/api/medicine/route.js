@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
     try {
         const medicines = await Medicine.find();
-        // console.log("MEDICINES", medicines);
+
         return NextResponse.json({ medicines }, { status: 200 });
     } catch (error) {
         console.log(error);

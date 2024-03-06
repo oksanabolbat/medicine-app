@@ -1,13 +1,14 @@
-//import MedicineList from "@/components/medicine-list";
-//import { getMedicines } from "@/lib/data";
+import MedicineList from "@/app/(components)/medicine-list";
 
-export default function Page({ params }) {
-    // const medicines = getMedicines(params.slug);
+import { getMedicinesInPh } from "@/app/lib/data";
+
+export default async function Page({ params }) {
+    const medicines = await getMedicinesInPh(params.slug);
 
     return (
         <div>
-            {/* <MedicineList items={medicines} /> */}
             <p>hello {params.slug}</p>
+            <MedicineList items={medicines} />
         </div>
     );
 }
