@@ -1,7 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 
-//mongoose.connect(`${process.env.MONGODB_URI}/pharmacy`);
-
 mongoose.Promise = global.Promise;
 
 const pharmacySchema = Schema(
