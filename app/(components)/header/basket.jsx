@@ -3,8 +3,8 @@ import Link from "next/link";
 import { useAppContext } from "@/app/(context)";
 
 const Basket = () => {
-    const basketCount = useAppContext();
-    console.log(basketCount);
+    const { basketCount } = useAppContext();
+
     return (
         <Link
             href="/shopping-cart"
