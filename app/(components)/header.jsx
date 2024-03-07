@@ -6,7 +6,7 @@ export default function Header() {
             <nav className="">
                 <ul className="flex gap-4 px-10">
                     <li>
-                        <NavHeaderLink href="/shop">Shop</NavHeaderLink>
+                        <NavHeaderLink href="/">Shop</NavHeaderLink>
                     </li>
                     <li>
                         <NavHeaderLink href="/shopping-cart">

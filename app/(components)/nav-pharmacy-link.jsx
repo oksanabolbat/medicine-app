@@ -10,7 +10,7 @@ const activeLinkClasses =
 
 export default function NavPharmacyLink({ href, children }) {
     const currPath = usePathname();
-    console.log(currPath);
+
     return (
         <Link
             href={href}

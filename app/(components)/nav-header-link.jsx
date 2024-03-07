@@ -8,7 +8,7 @@ const linkClasses =
 
 export default function NavHeaderLink({ href, children }) {
     const currPath = usePathname();
-    console.log(currPath);
+
     return (
         <Link
             href={href}

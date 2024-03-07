@@ -1,7 +1,7 @@
-import MedicineList from "./(components)/medicine-list";
-import { getMedicines } from "./lib/data";
+import MedicineList from "../(components)/medicine-list";
+import { getMedicines } from "../lib/data";
 
-export default async function Home() {
+export default async function ShopPage() {
     const { medicines } = await getMedicines();
 
     return (

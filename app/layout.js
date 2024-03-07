@@ -18,12 +18,7 @@ export default function RootLayout({ children }) {
                 <Header />
                 <main className="-mt-32 relative px-10">
                     <div className="mx-auto max-w-screen-xl px-4 pb-6 sm:px-6 lg:px-8 lg:pb-16 overflow-hidden rounded-lg bg-white shadow mt-4">
-                        <div className="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">
-                            <PharmaciesNav />
-                            <div className="divide-y divide-gray-200 lg:col-span-9">
-                                {children}
-                            </div>
-                        </div>
+                        {children}
                     </div>
                 </main>
             </body>
