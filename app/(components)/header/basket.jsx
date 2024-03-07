@@ -1,9 +1,15 @@
 "use client";
 import Link from "next/link";
 import { useAppContext } from "@/app/(context)";
+import { useEffect } from "react";
+import { getBasketCount } from "@/app/lib/storage";
 
 const Basket = () => {
-    const { basketCount } = useAppContext();
+    const { basketCount, setBasketCount } = useAppContext();
+    useEffect(() => {
+        const itemsCount = getBasketCount();
+        setBasketCount(itemsCount);
+    });
 
     return (
         <Link
@@ -34,7 +40,7 @@ const Basket = () => {
                     </g>
                 </svg>
                 <span className="text-xs absolute top-0.5 right-0.5 inline-block">
-                    {basketCount || "7"}
+                    {basketCount || "0"}
                 </span>
             </div>
         </Link>

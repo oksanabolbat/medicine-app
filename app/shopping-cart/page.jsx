@@ -1,3 +1,4 @@
+import Basket from "../(components)/basket";
 import MainForm from "../(components)/cart/main-form";
 
 export default function ShoppingCart() {
@@ -10,7 +11,7 @@ export default function ShoppingCart() {
                 <MainForm />
             </div>
             <div className="divide-y divide-gray-200 lg:col-span-6">
-                products
+                <Basket />
             </div>
         </>
     );
