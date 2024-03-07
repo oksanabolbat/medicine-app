@@ -6,8 +6,7 @@ export default async function ShopPage() {
 
     return (
         <div>
-            {" "}
-            <MedicineList items={medicines} />
+            <MedicineList items={medicines} pharmacy={false} />
         </div>
     );
 }

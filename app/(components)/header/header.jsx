@@ -1,3 +1,4 @@
+import Basket from "./basket";
 import NavHeaderLink from "./nav-header-link";
 
 export default function Header() {
@@ -12,6 +13,9 @@ export default function Header() {
                         <NavHeaderLink href="/shopping-cart">
                             Shopping cart
                         </NavHeaderLink>
+                    </li>
+                    <li>
+                        <Basket />
                     </li>
                 </ul>
             </nav>

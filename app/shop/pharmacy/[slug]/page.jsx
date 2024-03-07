@@ -7,8 +7,8 @@ export default async function Page({ params }) {
 
     return (
         <div>
-            <p>hello {params.slug}</p>
-            <MedicineList items={medicines} />
+            <p>hello ! {params.slug}</p>
+            <MedicineList items={medicines} pharmacy={true} />
         </div>
     );
 }
