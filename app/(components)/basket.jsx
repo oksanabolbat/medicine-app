@@ -10,8 +10,7 @@ const Basket = () => {
 
     const pharmacies = [...new Set(basketData.map((el) => el.phSlug))];
 
-    const createOrderHandler = (phSlug, ev) => {
-        ev.preventDefault();
+    const createOrderHandler = (phSlug) => {
         const products = getBasketData()
             .filter((el) => el.phSlug === phSlug && el.count > 0)
             .map((el) => ({
@@ -64,7 +63,7 @@ const Basket = () => {
                         <button
                             type="submit"
                             className="italic font-semibold text-purple-800 hover:text-purple-400 mb-4"
-                            onClick={(ev) => createOrderHandler(el, ev)}
+                            onClick={() => createOrderHandler(el)}
                             name={`pharmacy:${el}`}
                         >
                             place order
