@@ -1,6 +1,18 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
+deploy: [link](https://medicine-app-livid.vercel.app/shop)
+
+To run this site on dev:
+- run npm install, then npm run dev 
+-  add the file to the root (if the running server has a different route, please change it accordingly):
+  . env 
+MONGODB_URI=mongodb+srv://oksanabolbat:Bc9iBY4bZikubLHv@cluster0.nplyaje.mongodb.net/MedicineDB
+BASE_URL=http://localhost:3000
+
+
+
+## Getting Started
 
 First, run the development server:
 
