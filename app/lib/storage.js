@@ -58,3 +58,11 @@ export const updateMedicineCount = (phSlug, medSlug, inc) => {
         localStorage.setItem("medicines", JSON.stringify(basketData));
     }
 };
+
+export const sendOrder = (phSlug) => {
+    const basketData = getBasketData();
+    localStorage.setItem(
+        "medicines",
+        JSON.stringify(basketData.filter((el) => el.phSlug !== phSlug))
+    );
+};

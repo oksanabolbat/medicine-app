@@ -1,11 +1,9 @@
 "use client";
 import { createContext, useContext, useState } from "react";
-//import { getBasketCount } from "../lib/storage";
 
 const AppContext = createContext();
 
 export const AppWrapper = ({ children }) => {
-    //const defaultBasketCount = getBasketCount();
     const defaultBasketCount = 0;
 
     const [basketCount, setBasketCount] = useState(defaultBasketCount);
