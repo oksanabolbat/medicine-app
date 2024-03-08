@@ -1,7 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
-deploy: [link](https://medicine-app-livid.vercel.app/shop)
+deploy: [link](https://medicine-app-livid.vercel.app/shop) - it seems that prod has some glitches (i'll investigate it soon)
 
 To run this site on dev:
 - run npm install, then npm run dev 
