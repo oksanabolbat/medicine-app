@@ -4,11 +4,20 @@ import { useAppContext } from "@/app/(context)";
 
 import Button from "./ui/button";
 
-const AddToCartBtn = ({ prSlug, phSlug, price }) => {
+const AddToCartBtn = ({ phSlug, price, productData }) => {
     const { handleAddItemToCart } = useAppContext();
 
     return (
-        <Button onClick={() => handleAddItemToCart(prSlug, phSlug, price)}>
+        <Button
+            onClick={() =>
+                handleAddItemToCart(
+                    productData.slug,
+                    phSlug,
+                    price,
+                    productData
+                )
+            }
+        >
             Add to cart
         </Button>
     );

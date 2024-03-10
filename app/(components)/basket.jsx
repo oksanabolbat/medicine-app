@@ -2,26 +2,60 @@
 
 import OrderProduct from "./order-product";
 import { useAppContext } from "../(context)";
+import OrderGenerated from "./order-generated";
+import { useState } from "react";
 
 const Basket = () => {
     const { orders } = useAppContext();
+    const [orderConfirmed, setOrderConfirmed] = useState("false");
+    const [selectedPh, setSelectedPh] = useState();
+
+    const placeOrderHandler = (e, phSlug) => {
+        console.log("click", phSlug);
+        e.preventDefault();
+        setOrderConfirmed(true);
+        setSelectedPh(phSlug);
+    };
+    console.log("Order confirmed", orderConfirmed);
+    if (orderConfirmed === true) {
+        return <OrderGenerated phSlug={selectedPh} />;
+    }
 
     return (
         <div className="p-2">
             {orders.length === 0 && <p>You haven't added any items yet ...</p>}
 
-            {orders.map((el) => (
+            {orders.map((order) => (
                 <div>
                     <h3 className="font-semibold text-sky-900 uppercase">
-                        {el.phSlug}
+                        {order.phSlug}
                     </h3>
-                    {el.products.map((product) => (
+                    {order.products.map((product) => (
                         <OrderProduct
-                            key={`${el.phSlug}-${product.slug}`}
+                            key={`order-prod-${order.phSlug}-${product.slug}`}
                             product={product}
-                            phSlug={el.phSlug}
+                            phSlug={order.phSlug}
                         />
                     ))}
+                    <div className="flex justify-between font-semibold italic mt-2">
+                        <p className="font-semibold italic">
+                            Total:{" "}
+                            {order.products
+                                .reduce(
+                                    (acc, product) =>
+                                        (acc += product.price * product.count),
+                                    0
+                                )
+                                .toFixed(2)}
+                            $
+                        </p>
+                        <button
+                            className="text-sky-800 hover:text-sky-400 bg-sky-50 py-2 px-10 rounded-md italic"
+                            onClick={(e) => placeOrderHandler(e, order.phSlug)}
+                        >
+                            place order
+                        </button>
+                    </div>
                 </div>
             ))}
         </div>

@@ -10,9 +10,10 @@ const MedicinePhCard = ({ product, pharmacy, phSlug }) => {
                         {product.price}$
                     </p>
                     <AddToCartBtn
-                        prSlug={product.slug}
+                        // prSlug={product.slug}
                         price={product.price}
                         phSlug={phSlug}
+                        productData={product}
                     />
                 </div>
             </div>

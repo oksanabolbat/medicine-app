@@ -4,12 +4,12 @@ import MedicinePhCard from "./medicine-ph-card";
 export default function MedicineList({ items, pharmacy, phSlug }) {
     return (
         <ul className="flex justify-start gap-2 flex-wrap p-2">
-            {items.map((el) => (
-                <li key={el.slug}>
+            {items.map((product) => (
+                <li key={product.slug}>
                     {pharmacy ? (
-                        <MedicinePhCard product={el} phSlug={phSlug} />
+                        <MedicinePhCard product={product} phSlug={phSlug} />
                     ) : (
-                        <MedicineCard product={el} />
+                        <MedicineCard product={product} />
                     )}
                 </li>
             ))}
