@@ -1,49 +1,17 @@
-"use client";
-
-import { useState } from "react";
-import { useAppContext } from "../(context)";
-import { updateMedicineCount } from "../lib/storage";
 import Image from "next/image";
 import Button from "./ui/button";
+import { useAppContext } from "../(context)";
+import { getMedicineDetails } from "../lib/data";
 
-const OrderProduct = ({ product }) => {
-    const { setBasketCount } = useAppContext();
-    const [orderProduct, setOrderProduct] = useState({
-        count: +product.count,
-        price: +product.price,
-        total: Number(product.count) * Number(product.price),
-    });
+const OrderProduct = ({ product, phSlug }) => {
+    //product title, image
 
-    const incBtnHandler = () => {
-        updateMedicineCount(product.phSlug, product.slug, true);
-        setBasketCount((prev) => prev + 1);
-        setOrderProduct((prev) => {
-            const count = prev.count++;
-            const total = count * prev.price;
-
-            return {
-                count,
-                price: prev.price,
-                total,
-            };
-        });
-    };
-    const decrBtnHandler = () => {
-        updateMedicineCount(product.phSlug, product.slug);
-        setBasketCount((prev) => prev - 1);
-
-        if (orderProduct.count > 0) {
-            setOrderProduct((prev) => {
-                const count = prev.count--;
-                const total = count * prev.price;
-                return {
-                    count,
-                    price: prev.price,
-                    total,
-                };
-            });
-        }
-    };
+    const { handleAddItemToCart, handleRemoveItemFromCart } = useAppContext();
+    // useEffect(() => {}, []);
+    // const productDetails = getMedicineDetails(product.slug)
+    //     .then((res) => console.log(res))
+    //     .then((res) => console.log(res.data));
+    // console.log(productDetails);
 
     return (
         <div className="min-h-32 w-100 dark:bg-gray-900 dark:text-gray-100 border dark:border-0 mx-auto relative rounded-md p-2 mb-1">
@@ -52,10 +20,10 @@ const OrderProduct = ({ product }) => {
                     <p>{product.title}</p>
                     <div className="flex justify-between font-semibold">
                         <p className="italic">
-                            {orderProduct.price}$ x {orderProduct.count}
+                            {product.price}$ x {product.count}
                         </p>
 
-                        <p>{orderProduct.total.toFixed(2)}$</p>
+                        <p>{"total"}$</p>
                     </div>
                 </div>
                 <div className="sx:w-100 max-w-1/3">
@@ -69,8 +37,22 @@ const OrderProduct = ({ product }) => {
             </div>
 
             <div className="flex justify-end gap-5 mt-2">
-                <Button onClick={incBtnHandler}> + </Button>
-                <Button onClick={decrBtnHandler}> - </Button>
+                <Button
+                    onClick={() =>
+                        handleAddItemToCart(product.slug, phSlug, product.price)
+                    }
+                >
+                    {" "}
+                    +{" "}
+                </Button>
+                <Button
+                    onClick={() =>
+                        handleRemoveItemFromCart(product.slug, phSlug)
+                    }
+                >
+                    {" "}
+                    -{" "}
+                </Button>
             </div>
         </div>
     );

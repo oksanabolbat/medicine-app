@@ -5,7 +5,11 @@ import { useAppContext } from "@/app/(context)";
 const Basket = () => {
     const { orders } = useAppContext();
     let basketCount = 0;
+    console.log(orders);
     orders?.forEach((order) => {
+        if (!order.products) {
+            return;
+        }
         order.products?.forEach((product) => {
             basketCount = basketCount + product.count;
             console.log(product.slug, product.count);

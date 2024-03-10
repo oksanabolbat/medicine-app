@@ -1,11 +1,30 @@
+const baseUrl = process.env.BASE_URL;
+
 export const getMedicines = async () => {
     try {
-        const res = await fetch(`${process.env.BASE_URL}/api/medicine`, {
+        const res = await fetch(`${baseUrl}/api/medicine`, {
             cache: "no-store",
         });
 
         if (!res.ok) {
-            throw new Error("Failed to fetch topics");
+            throw new Error("Failed to fetch data");
+        }
+
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.log("Error loading medicines: ", error);
+    }
+};
+
+export const getMedicineDetails = async (slug) => {
+    try {
+        const res = await fetch(`/api/medicine/details/${slug}`, {
+            cache: "no-store",
+        });
+        console.log(res);
+        if (!res.ok) {
+            throw new Error("Failed to fetch data");
         }
 
         const data = await res.json();
@@ -22,7 +41,7 @@ export const getPharmacies = async () => {
         });
 
         if (!res.ok) {
-            throw new Error("Failed to fetch topics");
+            throw new Error("Failed to fetch data");
         }
 
         const data = await res.json();
@@ -42,7 +61,7 @@ export const getMedicinesInPh = async (phSlug) => {
         );
 
         if (!res.ok) {
-            throw new Error("Failed to fetch topics");
+            throw new Error("Failed to fetch data");
         }
 
         const data = await res.json();

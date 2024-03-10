@@ -5,16 +5,33 @@ const AppContext = createContext();
 
 export const AppWrapper = ({ children }) => {
     const defaultValue = {
-        contactForm: { name: "", email: "", phone: "", address: "" },
+        contactForm: {
+            name: "",
+            email: "",
+            phone: "",
+            address: "",
+            isReady: false,
+        },
         orders: [], // {phSlug, products:{slug, count, price}[], date, totalCount, totalSum }[]
+        medicines: {},
     };
     const [orderData, setOrderData] = useState(defaultValue);
+    const [medicines, setMedicines] = useState({});
 
-    const updateUserData = ({ name, email, phone, address }) => {
-        setOrderData((prev) => ({
-            ...prev,
-            contactForm: { name, email, phone, address },
-        }));
+    const updateUserData = ({ name, email, phone, address }, toEdit) => {
+        setOrderData((prev) => {
+            const isReady = !toEdit
+                ? false
+                : address.trim() !== "" &&
+                  name.trim() !== "" &&
+                  email.trim() !== "" &&
+                  phone.trim() !== "";
+
+            return {
+                ...prev,
+                contactForm: { name, email, phone, address, isReady },
+            };
+        });
     };
 
     const handleAddItemToCart = (prSlug, phSlug, price) => {
@@ -81,26 +98,65 @@ export const AppWrapper = ({ children }) => {
     };
     const handleRemoveItemFromCart = (prSlug, phSlug) => {
         setOrderData((prevOrderState) => {
-            const updateOrder = [...prevOrderState.orders];
-            const ind = updateOrder.findIndex((el) => el.phSlug === phSlug);
-            const updateProducts = [...updateOrder[ind].products];
-            const productIndex = updateProducts.findIndex(
-                (el) => el.slug === prSlug
+            const orders = prevOrderState.orders;
+            const phInd = orders.findIndex(
+                (orders) => orders.phSlug === phSlug
             );
-            if (updateProducts[productIndex].count > 1) {
-                updateProducts[productIndex].count--;
-            } else {
-                updateProducts[productIndex].splice(productIndex, 1);
+            const products = orders[phInd].products;
+            const productInd = products.findIndex(
+                (product) => product.slug === prSlug
+            );
+
+            if (products[productInd].count > 1) {
+                return {
+                    ...prevOrderState,
+
+                    orders: orders.map((order, i) =>
+                        i === phInd
+                            ? {
+                                  ...order,
+                                  products: order.products.map((product, i) =>
+                                      i === productInd
+                                          ? {
+                                                ...product,
+                                                count: product.count - 1,
+                                            }
+                                          : product
+                                  ),
+                              }
+                            : order
+                    ),
+                };
             }
+
+            const filteredProducts = products.filter(
+                (_, i) => i !== productInd
+            );
+            const filteredPhs = filteredProducts.length
+                ? orders.map((order, i) =>
+                      i === phInd
+                          ? {
+                                ...order,
+                                products: filteredProducts,
+                            }
+                          : order
+                  )
+                : orders.filter((_, i) => i !== phInd);
 
             return {
                 ...prevOrderState,
 
-                orders: updateOrder,
+                orders: filteredPhs,
             };
         });
     };
-
+    const updateMedicines = (medicines) => {
+        const allMedicines = {};
+        medicines.forEach(
+            (medicine) => (allMedicines[medicine.slug] = medicine)
+        );
+        setMedicines(allMedicines);
+    };
     return (
         <AppContext.Provider
             value={{
@@ -108,6 +164,8 @@ export const AppWrapper = ({ children }) => {
                 handleAddItemToCart,
                 handleRemoveItemFromCart,
                 updateUserData,
+                medicines,
+                updateMedicines,
             }}
         >
             {children}
