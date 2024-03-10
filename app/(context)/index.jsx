@@ -6,7 +6,6 @@ const AppContext = createContext();
 export const AppWrapper = ({ children }) => {
     const defaultValue = {
         contactForm: { name: "", email: "", phone: "", address: "" },
-        basket: { itemsCount: 0, total: 0 },
         orders: [], // {phSlug, products:{slug, count, price}[], date, totalCount, totalSum }[]
     };
     const [orderData, setOrderData] = useState(defaultValue);
@@ -20,53 +19,83 @@ export const AppWrapper = ({ children }) => {
 
     const handleAddItemToCart = (prSlug, phSlug, price) => {
         setOrderData((prevOrderState) => {
-            const updateOrders = [...orderData.orders];
-            const ind = updateOrders.findIndex((el = el.phSlug === phSlug));
-            if (ind) {
-                const updateProducts = [...updateOrders[ind].products];
-                const productIndex = updateProducts((el) => el.slug === prSlug);
-                if (productIndex) {
-                    updateProducts[productIndex].count++;
-                } else {
-                    updateProducts.push({ slug: prSlug, count: 1, price });
+            const phIndex = prevOrderState.orders.findIndex(
+                (el) => el.phSlug === phSlug
+            );
+            if (phIndex > -1) {
+                const productIndex = prevOrderState.orders[
+                    phIndex
+                ].products.findIndex((el) => el.slug === prSlug);
+
+                if (productIndex !== -1) {
+                    return {
+                        ...prevOrderState,
+                        orders: prevOrderState.orders.map((ph, i) =>
+                            i === phIndex
+                                ? {
+                                      phSlug,
+                                      products: prevOrderState.orders[
+                                          phIndex
+                                      ].products.map((product, i) =>
+                                          i === productIndex
+                                              ? {
+                                                    ...product,
+                                                    count: product.count + 1,
+                                                }
+                                              : product
+                                      ),
+                                  }
+                                : ph
+                        ),
+                    };
                 }
-            } else {
-                //
-                updateOrders.push({
-                    phSlug,
-                    products: [{ slug: prSlug, count: 1, price }],
-                });
+
+                return {
+                    ...prevOrderState,
+                    orders: prevOrderState.orders.map((ph, i) =>
+                        i === phIndex
+                            ? {
+                                  phSlug,
+                                  products: [
+                                      ...prevOrderState.orders[phIndex]
+                                          .products,
+                                      { slug: prSlug, count: 1, price: +price },
+                                  ],
+                              }
+                            : ph
+                    ),
+                };
             }
-            const updateBasket = {
-                itemsCount: prevOrderState.basket.itemsCount++,
-                total: (prevOrderState.basket.total += price),
-            };
+
             return {
                 ...prevOrderState,
-                basket: updateBasket,
-                orders: updateOrders,
+                orders: [
+                    ...prevOrderState.orders,
+                    {
+                        phSlug,
+                        products: [{ slug: prSlug, count: 1, price: +price }],
+                    },
+                ],
             };
         });
     };
-    const handleRemoveItemFromCart = (prSlug, phSlug, price) => {
+    const handleRemoveItemFromCart = (prSlug, phSlug) => {
         setOrderData((prevOrderState) => {
-            const updateBasket = { ...prevOrderState.basket };
             const updateOrder = [...prevOrderState.orders];
             const ind = updateOrder.findIndex((el) => el.phSlug === phSlug);
             const updateProducts = [...updateOrder[ind].products];
             const productIndex = updateProducts.findIndex(
                 (el) => el.slug === prSlug
             );
-            if (updateProducts[productIndex].count > 2) {
+            if (updateProducts[productIndex].count > 1) {
                 updateProducts[productIndex].count--;
             } else {
                 updateProducts[productIndex].splice(productIndex, 1);
             }
-            updateBasket.count--;
-            updateBasket.total -= price;
+
             return {
                 ...prevOrderState,
-                basket: updateBasket,
+
                 orders: updateOrder,
             };
         });
@@ -75,12 +104,10 @@ export const AppWrapper = ({ children }) => {
     return (
         <AppContext.Provider
             value={{
-                contactForm,
-                basket,
-                orders,
-                updateUserData,
+                ...orderData,
                 handleAddItemToCart,
                 handleRemoveItemFromCart,
+                updateUserData,
             }}
         >
             {children}

@@ -1,7 +1,7 @@
 import MedicineCard from "./medicine-card";
 import MedicinePhCard from "./medicine-ph-card";
 
-export default function MedicineList({ items, pharmacy }) {
+export default function MedicineList({ items, pharmacy, phSlug }) {
     //  console.log(items);
 
     return (
@@ -9,7 +9,7 @@ export default function MedicineList({ items, pharmacy }) {
             {items.map((el) => (
                 <li key={el.slug}>
                     {pharmacy ? (
-                        <MedicinePhCard product={el} />
+                        <MedicinePhCard product={el} phSlug={phSlug} />
                     ) : (
                         <MedicineCard product={el} />
                     )}

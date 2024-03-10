@@ -1,7 +1,7 @@
 import AddToCartBtn from "./add-to-cart-btn";
 import MedicineCard from "./medicine-card";
 
-const MedicinePhCard = ({ product, pharmacy }) => {
+const MedicinePhCard = ({ product, pharmacy, phSlug }) => {
     return (
         <MedicineCard product={product}>
             <div className="text-xs flex justify-center  mt-1">
@@ -10,9 +10,9 @@ const MedicinePhCard = ({ product, pharmacy }) => {
                         {product.price}$
                     </p>
                     <AddToCartBtn
-                        prSlug={product}
-                        phSlug={pharmacy}
-                        price={5}
+                        prSlug={product.slug}
+                        price={product.price}
+                        phSlug={phSlug}
                     />
                 </div>
             </div>
