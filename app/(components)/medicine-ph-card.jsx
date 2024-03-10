@@ -9,7 +9,11 @@ const MedicinePhCard = ({ product, pharmacy }) => {
                     <p className="text-center text-xs font-semibold flex justify-center gap-2 my-2">
                         {product.price}$
                     </p>
-                    <AddToCartBtn product={product} pharmacy={pharmacy} />
+                    <AddToCartBtn
+                        prSlug={product}
+                        phSlug={pharmacy}
+                        price={5}
+                    />
                 </div>
             </div>
         </MedicineCard>
