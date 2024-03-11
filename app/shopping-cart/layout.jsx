@@ -1,13 +1,8 @@
-import { placeOrderHandler } from "../lib/order";
-
 const CartLayout = ({ children }) => {
     return (
-        <form
-            className="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x"
-            action={placeOrderHandler}
-        >
+        <div className="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">
             {children}
-        </form>
+        </div>
     );
 };
 

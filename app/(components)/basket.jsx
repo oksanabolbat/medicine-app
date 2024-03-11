@@ -1,70 +1,57 @@
 "use client";
 
-import { useState } from "react";
-import { getBasketData } from "../lib/storage";
 import OrderProduct from "./order-product";
+import { useAppContext } from "../(context)";
+import OrderGenerated from "./order-generated";
+import { useState } from "react";
 
 const Basket = () => {
-    const basketData = getBasketData();
-    const [orderDataJson, setOrderDataJson] = useState("");
+    const { orders } = useAppContext();
+    const [orderConfirmed, setOrderConfirmed] = useState("false");
+    const [selectedPh, setSelectedPh] = useState();
 
-    const pharmacies = [...new Set(basketData.map((el) => el.phSlug))];
-
-    const createOrderHandler = (phSlug) => {
-        const products = getBasketData()
-            .filter((el) => el.phSlug === phSlug && el.count > 0)
-            .map((el) => ({
-                product_slug: el.slug,
-                count: el.count,
-                price: +el.price,
-                total: el.count * Number(el.price),
-            }));
-
-        const sum = products.reduce((acc, el) => (acc += +el.total), 0);
-        const itemsCount = products.reduce((acc, el) => (acc += el.count), 0);
-
-        const orderData = {
-            pharmacy: phSlug,
-            sum,
-            products,
-            items_count: itemsCount,
-        };
-
-        setOrderDataJson(JSON.stringify(orderData));
+    const placeOrderHandler = (e, phSlug) => {
+        console.log("click", phSlug);
+        e.preventDefault();
+        setOrderConfirmed(true);
+        setSelectedPh(phSlug);
     };
+    console.log("Order confirmed", orderConfirmed);
+    if (orderConfirmed === true) {
+        return <OrderGenerated phSlug={selectedPh} />;
+    }
+
     return (
         <div className="p-2">
-            {basketData.length === 0 && (
-                <p>You haven't added any items yet ...</p>
-            )}
+            {orders.length === 0 && <p>You haven't added any items yet ...</p>}
 
-            {pharmacies.map((el) => (
-                <div key={el}>
+            {orders.map((order) => (
+                <div>
                     <h3 className="font-semibold text-sky-900 uppercase">
-                        {el}
+                        {order.phSlug}
                     </h3>
-                    {basketData.map((productData) => {
-                        if (productData.phSlug === el) {
-                            return (
-                                <OrderProduct
-                                    key={`${el}-${productData.slug}`}
-                                    product={productData}
-                                />
-                            );
-                        }
-                    })}
-                    <div className="flex justify-end">
-                        <input
-                            name="order"
-                            value={orderDataJson}
-                            readOnly
-                            className="hidden"
+                    {order.products.map((product) => (
+                        <OrderProduct
+                            key={`order-prod-${order.phSlug}-${product.slug}`}
+                            product={product}
+                            phSlug={order.phSlug}
                         />
+                    ))}
+                    <div className="flex justify-between font-semibold italic mt-2">
+                        <p className="font-semibold italic">
+                            Total:{" "}
+                            {order.products
+                                .reduce(
+                                    (acc, product) =>
+                                        (acc += product.price * product.count),
+                                    0
+                                )
+                                .toFixed(2)}
+                            $
+                        </p>
                         <button
-                            type="submit"
-                            className="italic font-semibold text-purple-800 hover:text-purple-400 mb-4"
-                            onClick={() => createOrderHandler(el)}
-                            name={`pharmacy:${el}`}
+                            className="text-sky-800 hover:text-sky-400 bg-sky-50 py-2 px-10 rounded-md italic"
+                            onClick={(e) => placeOrderHandler(e, order.phSlug)}
                         >
                             place order
                         </button>

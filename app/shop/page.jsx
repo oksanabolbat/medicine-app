@@ -1,4 +1,5 @@
 import MedicineList from "../(components)/medicine-list";
+
 import { getMedicines } from "../lib/data";
 
 export default async function ShopPage() {

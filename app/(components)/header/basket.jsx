@@ -1,16 +1,20 @@
 "use client";
 import Link from "next/link";
 import { useAppContext } from "@/app/(context)";
-import { useEffect } from "react";
-import { getBasketCount } from "@/app/lib/storage";
 
 const Basket = () => {
-    const { basketCount, setBasketCount } = useAppContext();
-    useEffect(() => {
-        const itemsCount = getBasketCount();
-        setBasketCount(itemsCount);
+    const { orders } = useAppContext();
+    let basketCount = 0;
+    console.log(orders);
+    orders?.forEach((order) => {
+        if (!order.products) {
+            return;
+        }
+        order.products?.forEach((product) => {
+            basketCount = basketCount + product.count;
+            console.log(product.slug, product.count);
+        });
     });
-
     return (
         <Link
             href="/shopping-cart"
