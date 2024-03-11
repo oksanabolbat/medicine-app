@@ -47,7 +47,6 @@ const OrderGenerated = ({ phSlug }) => {
                 <Button
                     onClick={async () => {
                         await createOrder({
-                            slug: contactForm.name + String(new Date()),
                             user_name: contactForm.name,
                             email: contactForm.email,
                             phone: contactForm.phone,

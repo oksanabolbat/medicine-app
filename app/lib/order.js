@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 
 export const createOrder = async (orderDetails) => {
     const orderData = {
-        slug: orderDetails.user_name + String(new Date()),
         user_name: orderDetails.user_name,
         email: orderDetails.email,
         phone: orderDetails.phone,
