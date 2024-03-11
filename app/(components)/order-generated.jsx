@@ -48,7 +48,7 @@ const OrderGenerated = ({ phSlug }) => {
                     Address: {contactForm.address} <br />
                 </p>
                 {selectedOrder.products.map((product) => (
-                    <p>
+                    <p key={product.slug}>
                         product: {product.slug} - {product.price}%{" "}
                         {product.count}
                     </p>
