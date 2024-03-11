@@ -1,31 +1,28 @@
+"use server";
+
 import { redirect } from "next/navigation";
 
-export const placeOrderHandler = async (formData) => {
-    "use server";
-
-    const details = JSON.parse(formData.get("order"));
-    const sum = Number(details.sum);
-
+export const createOrder = async (orderDetails) => {
     const orderData = {
-        slug: formData.get("user_name") + String(new Date()),
-        user_name: formData.get("user_name"),
-        email: formData.get("email"),
-        phone: formData.get("phone"),
-        address: formData.get("address"),
-        sum,
-        pharmacy: details.pharmacy,
-        items_count: details.items_count,
-        order: details.products,
+        slug: orderDetails.user_name + String(new Date()),
+        user_name: orderDetails.user_name,
+        email: orderDetails.email,
+        phone: orderDetails.phone,
+        address: orderDetails.address,
+        sum: orderDetails.sum,
+        pharmacy: orderDetails.pharmacy,
+        items_count: orderDetails.items_count,
+        order: orderDetails.order,
     };
 
     const res = await fetch(`${process.env.BASE_URL}/api/order`, {
         method: "POST",
-        body: JSON.stringify({ orderData }),
+        body: JSON.stringify({ orderData: orderData }),
         "context-type": "application/json",
     });
     if (!res.ok) {
         throw new Error("Failed to place your Order");
     } else {
-        redirect(`/order/placed/${details.pharmacy}`);
+        redirect(`/order/placed/${orderData.pharmacy}`);
     }
 };
