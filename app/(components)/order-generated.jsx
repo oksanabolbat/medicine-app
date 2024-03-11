@@ -1,10 +1,13 @@
+//import { redirect } from "next/navigation";
 import { createOrder } from "../lib/order";
 import Button from "./ui/button";
+import { useRouter } from "next/navigation";
 
 const { useAppContext } = require("../(context)");
 
 const OrderGenerated = ({ phSlug }) => {
     const { orders, contactForm } = useAppContext();
+    const router = useRouter();
     const selectedOrder = orders.find((order) => order.phSlug === phSlug);
     const orderSum = selectedOrder.products.reduce(
         (acc, product) => (acc += product.price * product.count),
@@ -56,6 +59,9 @@ const OrderGenerated = ({ phSlug }) => {
                             items_count: totalItems,
                             order: orderInfo,
                         });
+                        console.log("before redirect");
+
+                        router.push(`/order/placed/${phSlug}`);
                     }}
                 >
                     ok
