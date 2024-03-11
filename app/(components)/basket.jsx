@@ -11,12 +11,11 @@ const Basket = () => {
     const [selectedPh, setSelectedPh] = useState();
 
     const placeOrderHandler = (e, phSlug) => {
-        console.log("click", phSlug);
         e.preventDefault();
         setOrderConfirmed(true);
         setSelectedPh(phSlug);
     };
-    console.log("Order confirmed", orderConfirmed);
+
     if (orderConfirmed === true) {
         return <OrderGenerated phSlug={selectedPh} />;
     }

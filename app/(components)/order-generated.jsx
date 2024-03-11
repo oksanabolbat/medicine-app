@@ -14,28 +14,13 @@ const OrderGenerated = ({ phSlug }) => {
         (acc, product) => (acc += product.count),
         0
     );
-    console.log("ORDERS ", selectedOrder);
 
-    const placeOrderHandler = () => {
-        const orderInfo = selectedOrder.products.map((product) => ({
-            product_slug: product.slug,
-            count: product.count,
-            price: product.price,
-        }));
+    const orderInfo = selectedOrder.products.map((product) => ({
+        product_slug: product.slug,
+        count: product.count,
+        price: product.price,
+    }));
 
-        createOrder({
-            slug: contactForm.name + String(new Date()),
-            user_name: contactForm.name,
-            email: contactForm.email,
-            phone: contactForm.phone,
-            address: contactForm.address,
-            sum: orderSum,
-            pharmacy: phSlug,
-            items_count: totalItems, //
-            order: orderInfo, //
-        });
-        console.log("created");
-    };
     return (
         <div>
             <h3>Please confirm order details:</h3>
@@ -59,7 +44,23 @@ const OrderGenerated = ({ phSlug }) => {
                 Total: {orderSum || 0}
             </p>
             <div>
-                <Button onClick={placeOrderHandler}>ok</Button>
+                <Button
+                    onClick={async () => {
+                        await createOrder({
+                            slug: contactForm.name + String(new Date()),
+                            user_name: contactForm.name,
+                            email: contactForm.email,
+                            phone: contactForm.phone,
+                            address: contactForm.address,
+                            sum: orderSum,
+                            pharmacy: phSlug,
+                            items_count: totalItems,
+                            order: orderInfo,
+                        });
+                    }}
+                >
+                    ok
+                </Button>
                 <Button onClick={() => {}}>cancel</Button>
             </div>
         </div>

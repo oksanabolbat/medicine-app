@@ -35,10 +35,8 @@ export const AppWrapper = ({ children }) => {
     };
 
     const handleAddItemToCart = (prSlug, phSlug, price, product) => {
-        console.log("Product ", product);
         if (product) {
             medicines[product.slug] = product;
-            console.log("medicines ", medicines);
         }
         setOrderData((prevOrderState) => {
             const phIndex = prevOrderState.orders.findIndex(
