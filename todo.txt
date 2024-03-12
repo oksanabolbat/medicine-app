@@ -1,0 +1,5 @@
+1. contact info validation
+1-1 basket update after creation order
+using id-s instead of slug
+2. generated order validate contact 
+3. redirection to the order page

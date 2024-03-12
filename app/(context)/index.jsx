@@ -153,6 +153,26 @@ export const AppWrapper = ({ children }) => {
             };
         });
     };
+    const handleSendOrder = (phSlug) => {
+        setOrderData((prevOrderState) => {
+            const orders =
+                prevOrderState.orders?.filter(
+                    (order) => order.phSlug !== phSlug
+                ) || [];
+            console.log(
+                "ORDERS ",
+                orders,
+                "PREV ",
+                prevOrderState.orders,
+                "PH SLUG ",
+                phSlug
+            );
+            return {
+                ...prevOrderState,
+                orders,
+            };
+        });
+    };
     const updateMedicines = (medicines) => {
         const allMedicines = {};
         medicines.forEach(
@@ -167,6 +187,7 @@ export const AppWrapper = ({ children }) => {
                 handleAddItemToCart,
                 handleRemoveItemFromCart,
                 updateUserData,
+                handleSendOrder,
                 medicines,
             }}
         >

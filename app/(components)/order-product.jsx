@@ -32,6 +32,7 @@ const OrderProduct = ({ product, phSlug }) => {
 
             <div className="flex justify-end gap-5 mt-2">
                 <Button
+                    // key={`add-prod-ph-${productData.slug}-${phSlug}`}
                     onClick={() =>
                         handleAddItemToCart(product.slug, phSlug, product.price)
                     }
@@ -43,6 +44,7 @@ const OrderProduct = ({ product, phSlug }) => {
                     onClick={() =>
                         handleRemoveItemFromCart(product.slug, phSlug)
                     }
+                    // key={`remove-prod-ph-${productData.slug}-${phSlug}`}
                 >
                     {" "}
                     -{" "}

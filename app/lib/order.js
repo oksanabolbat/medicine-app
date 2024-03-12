@@ -1,11 +1,13 @@
 "use server";
 
 import axios from "axios";
-import { redirect } from "next/navigation";
+import { ObjectId } from "mongodb";
 
 export const createOrder = async (orderDetails) => {
+    const objId = new ObjectId();
+    console.log("ObjectId: ", objId);
     const orderData = {
-        slug: "test try",
+        _id: objId,
         user_name: orderDetails.user_name,
         email: orderDetails.email,
         phone: orderDetails.phone,
@@ -15,34 +17,17 @@ export const createOrder = async (orderDetails) => {
         items_count: orderDetails.items_count,
         order: orderDetails.order,
     };
-    console.log("path ", `${process.env.BASE_URL}/api/order`);
+
     try {
-        const res = await axios.post(
-            `${process.env.BASE_URL}/api/order`,
-            { orderData },
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-        console.log("res", res.data);
-        // res.status(200).json(res.data);
-        // redirect(`/order/placed/${orderData.pharmacy}`);
+        const res = await axios.post(`${process.env.BASE_URL}/api/order`, {
+            orderData,
+        });
+
         if (res.status === 200) {
-            return orderData.pharmacy;
+            return { orderId: objId.toString() };
         }
     } catch (error) {
         console.log(error);
         throw new Error("Failed to place your Order");
     }
-    // console.log("res ", res);
-    // const res = await fetch(`${process.env.BASE_URL}/api/order`, {
-    //     method: "POST",
-    //     body: JSON.stringify({ orderData: orderData }),
-    //     "context-type": "application/json",
-    // });
-    // if (!res.ok) {
-    // } else {
-    // }
 };

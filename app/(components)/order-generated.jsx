@@ -6,9 +6,13 @@ import { useRouter } from "next/navigation";
 const { useAppContext } = require("../(context)");
 
 const OrderGenerated = ({ phSlug }) => {
-    const { orders, contactForm } = useAppContext();
+    const { orders, contactForm, handleSendOrder } = useAppContext();
     const router = useRouter();
+
     const selectedOrder = orders.find((order) => order.phSlug === phSlug);
+    if (!selectedOrder) {
+        return <></>;
+    }
     const orderSum = selectedOrder.products.reduce(
         (acc, product) => (acc += product.price * product.count),
         0
@@ -48,8 +52,9 @@ const OrderGenerated = ({ phSlug }) => {
             </p>
             <div>
                 <Button
-                    onClick={async () => {
-                        await createOrder({
+                    onClick={async (e) => {
+                        e.preventDefault();
+                        const { orderId } = await createOrder({
                             user_name: contactForm.name,
                             email: contactForm.email,
                             phone: contactForm.phone,
@@ -59,9 +64,9 @@ const OrderGenerated = ({ phSlug }) => {
                             items_count: totalItems,
                             order: orderInfo,
                         });
-                        console.log("before redirect");
 
-                        router.push(`/order/placed/${phSlug}`);
+                        handleSendOrder(phSlug);
+                        router.push(`/order/placed/${orderId}`);
                     }}
                 >
                     ok

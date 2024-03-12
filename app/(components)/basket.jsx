@@ -25,13 +25,13 @@ const Basket = () => {
             {orders.length === 0 && <p>You haven't added any items yet ...</p>}
 
             {orders.map((order) => (
-                <div>
+                <div key={`order-${order.phSlug}`}>
                     <h3 className="font-semibold text-sky-900 uppercase">
                         {order.phSlug}
                     </h3>
-                    {order.products.map((product) => (
+                    {order.products.map((product, i) => (
                         <OrderProduct
-                            key={`order-prod-${order.phSlug}-${product.slug}`}
+                            key={`order-prod-${i}-${product.slug}`}
                             product={product}
                             phSlug={order.phSlug}
                         />
